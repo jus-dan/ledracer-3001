@@ -1,6 +1,16 @@
 input.onButtonPressed(Button.A, function () {
     if (modus == 1) {
+        DFPlayerPro.MP3_playFilePathName("letsgo.mp3")
+        for (let index = 0; index < 13; index++) {
+            LedBlau.rotate(2)
+            LedBlau.show()
+            basic.pause(200)
+            LedRot.rotate(2)
+            LedRot.show()
+            basic.pause(200)
+        }
         DFPlayerPro.MP3_playFilePathName("start.mp3")
+        // Buttons nicht blinken
         modus = 41
         basic.pause(5000)
         startzeit = input.runningTime()
@@ -23,7 +33,7 @@ input.onPinPressed(TouchPin.P2, function () {
     if (modus == 42) {
         LedRot.rotate(ledSteps)
         counterRed += ledSteps
-        if (counterRed >= numerOfLeds * spielrunden - 5) {
+        if (counterRed >= numerOfLeds * spielrunden + 0) {
             won("rot")
         }
     }
@@ -33,7 +43,7 @@ input.onPinPressed(TouchPin.P1, function () {
     if (modus == 42) {
         LedBlau.rotate(ledSteps)
         counterBlue += ledSteps
-        if (counterBlue >= numerOfLeds * spielrunden - 5) {
+        if (counterBlue >= numerOfLeds * spielrunden + 0) {
             won("blau")
         }
     }
@@ -44,7 +54,20 @@ function setup () {
     modus = 0
     LedBlau = neopixel.create(DigitalPin.P14, numerOfLeds, NeoPixelMode.RGB)
     LedRot = neopixel.create(DigitalPin.P14, numerOfLeds, NeoPixelMode.RGB)
-    ledDemo = neopixel.create(DigitalPin.P14, 16, NeoPixelMode.RGB)
+    LedBlau.setPixelColor(0, neopixel.colors(NeoPixelColors.Blue))
+    LedBlau.setPixelColor(1, neopixel.colors(NeoPixelColors.Blue))
+    LedBlau.setPixelColor(2, neopixel.colors(NeoPixelColors.Blue))
+    LedBlau.setPixelColor(3, neopixel.colors(NeoPixelColors.Blue))
+    LedBlau.setPixelColor(4, neopixel.colors(NeoPixelColors.Blue))
+    LedBlau.setPixelColor(5, neopixel.colors(NeoPixelColors.Blue))
+    LedBlau.show()
+    LedRot.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
+    LedRot.setPixelColor(1, neopixel.colors(NeoPixelColors.Red))
+    LedRot.setPixelColor(2, neopixel.colors(NeoPixelColors.Red))
+    LedRot.setPixelColor(3, neopixel.colors(NeoPixelColors.Red))
+    LedRot.setPixelColor(4, neopixel.colors(NeoPixelColors.Red))
+    LedRot.setPixelColor(5, neopixel.colors(NeoPixelColors.Red))
+    LedRot.show()
     aktuelleLautstärke = Math.round(Math.map(pins.analogReadPin(AnalogPin.P0), 0, 1023, 0, 30))
     DFPlayerPro.MP3_setSerial(SerialPin.P13, SerialPin.P16)
     DFPlayerPro.MP3_amplifierMode(
@@ -56,38 +79,17 @@ function setup () {
     DFPlayerPro.MP3_amplifierMode(
     DFPlayerPro.ampType.ampOn
     )
-    initDemo()
     modus = 1
     basic.showIcon(IconNames.Happy)
 }
-function initDemo () {
-    ledDemo.showRainbow(1, 360)
-}
-function initRace () {
-    LedRot.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
-    LedRot.setPixelColor(1, neopixel.colors(NeoPixelColors.Red))
-    LedRot.setPixelColor(2, neopixel.colors(NeoPixelColors.Red))
-    LedRot.setPixelColor(3, neopixel.colors(NeoPixelColors.Red))
-    LedRot.setPixelColor(4, neopixel.colors(NeoPixelColors.Red))
-    LedRot.setPixelColor(5, neopixel.colors(NeoPixelColors.Red))
-    LedRot.show()
-    LedBlau.setPixelColor(0, neopixel.colors(NeoPixelColors.Blue))
-    LedBlau.setPixelColor(1, neopixel.colors(NeoPixelColors.Blue))
-    LedBlau.setPixelColor(2, neopixel.colors(NeoPixelColors.Blue))
-    LedBlau.setPixelColor(3, neopixel.colors(NeoPixelColors.Blue))
-    LedBlau.setPixelColor(4, neopixel.colors(NeoPixelColors.Blue))
-    LedBlau.setPixelColor(5, neopixel.colors(NeoPixelColors.Blue))
-    LedBlau.show()
-}
 let neueLautstärke = 0
 let aktuelleLautstärke = 0
-let ledDemo: neopixel.Strip = null
 let counterBlue = 0
-let LedBlau: neopixel.Strip = null
 let counterRed = 0
-let LedRot: neopixel.Strip = null
 let endzeit = 0
 let startzeit = 0
+let LedRot: neopixel.Strip = null
+let LedBlau: neopixel.Strip = null
 let spielrunden = 0
 let ledSteps = 0
 let numerOfLeds = 0
@@ -96,7 +98,7 @@ radio.setGroup(42)
 modus = 0
 numerOfLeds = 450
 ledSteps = 5
-spielrunden = 1
+spielrunden = 2
 basic.pause(1000)
 setup()
 // Spielbuttons Blinken
@@ -133,9 +135,7 @@ basic.forever(function () {
         LedBlau.show()
         basic.pause(200)
     } else if (modus == 1) {
-        ledDemo.rotate(randint(1, 8))
-        ledDemo.show()
-        basic.pause(100)
+        basic.pause(50)
     } else {
         basic.pause(50)
     }
