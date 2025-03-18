@@ -1,12 +1,10 @@
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    setup()
-})
 input.onButtonPressed(Button.A, function () {
     if (modus == 1) {
-        modus = 42
         DFPlayerPro.MP3_playFilePathName("start.mp3")
+        modus = 41
+        basic.pause(5000)
+        modus = 42
     } else {
-        DFPlayerPro.MP3_control(DFPlayerPro.ControlType.playPause)
         setup()
     }
 })
@@ -16,12 +14,10 @@ input.onPinPressed(TouchPin.P2, function () {
         LedRot.rotate(ledSteps)
         counterRed += ledSteps
         if (counterRed >= numerOfLeds * spielrunden - 5) {
-            modus = 3
+            modus = 4
+            DFPlayerPro.MP3_playFilePathName("winning.mp3")
         }
     }
-})
-input.onButtonPressed(Button.B, function () {
-	
 })
 // BLAU
 input.onPinPressed(TouchPin.P1, function () {
@@ -29,7 +25,8 @@ input.onPinPressed(TouchPin.P1, function () {
         LedBlau.rotate(ledSteps)
         counterBlue += ledSteps
         if (counterBlue >= numerOfLeds * spielrunden - 5) {
-            modus = 3
+            modus = 4
+            DFPlayerPro.MP3_playFilePathName("winning.mp3")
         }
     }
 })
@@ -91,11 +88,11 @@ basic.forever(function () {
     basic.pause(50)
 })
 basic.forever(function () {
-    if (modus == 42) {
+    if (modus >= 41) {
         LedRot.show()
         basic.pause(50)
         LedBlau.show()
-    } else if (modus == 3) {
+    } else if (modus == 4) {
         LedRot.show()
         basic.pause(200)
         LedBlau.show()
