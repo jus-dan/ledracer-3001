@@ -4,27 +4,41 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
 input.onButtonPressed(Button.A, function () {
     if (modus == 1) {
         modus = 42
+        DFPlayerPro.MP3_playFilePathName("start.mp3")
     } else {
+        DFPlayerPro.MP3_control(DFPlayerPro.ControlType.playPause)
         setup()
     }
 })
+// ROT
 input.onPinPressed(TouchPin.P2, function () {
     if (modus == 42) {
-        LedRot.rotate(5)
+        LedRot.rotate(ledSteps)
+        counterRed += ledSteps
+        if (counterRed >= numerOfLeds * spielrunden - 5) {
+            modus = 3
+        }
     }
 })
 input.onButtonPressed(Button.B, function () {
-    DFPlayerPro.MP3_control(DFPlayerPro.ControlType.playPause)
+	
 })
+// BLAU
 input.onPinPressed(TouchPin.P1, function () {
     if (modus == 42) {
-        LedBlau.rotate(5)
+        LedBlau.rotate(ledSteps)
+        counterBlue += ledSteps
+        if (counterBlue >= numerOfLeds * spielrunden - 5) {
+            modus = 3
+        }
     }
 })
 function setup () {
+    counterBlue = 0
+    counterRed = 0
     modus = 0
-    LedBlau = neopixel.create(DigitalPin.P14, 62, NeoPixelMode.RGB)
-    LedRot = neopixel.create(DigitalPin.P14, 62, NeoPixelMode.RGB)
+    LedBlau = neopixel.create(DigitalPin.P14, numerOfLeds, NeoPixelMode.RGB)
+    LedRot = neopixel.create(DigitalPin.P14, numerOfLeds, NeoPixelMode.RGB)
     LedRot.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
     LedRot.setPixelColor(1, neopixel.colors(NeoPixelColors.Red))
     LedRot.setPixelColor(2, neopixel.colors(NeoPixelColors.Red))
@@ -55,11 +69,18 @@ function setup () {
 }
 let neueLautstärke = 0
 let aktuelleLautstärke = 0
+let counterBlue = 0
 let LedBlau: neopixel.Strip = null
+let counterRed = 0
 let LedRot: neopixel.Strip = null
+let spielrunden = 0
+let ledSteps = 0
+let numerOfLeds = 0
 let modus = 0
 modus = 0
-let toggleTimeGreenButtonMs = 200
+numerOfLeds = 62
+ledSteps = 3
+spielrunden = 1
 setup()
 basic.forever(function () {
     if (modus == 42) {
@@ -74,8 +95,14 @@ basic.forever(function () {
         LedRot.show()
         basic.pause(50)
         LedBlau.show()
+    } else if (modus == 3) {
+        LedRot.show()
+        basic.pause(200)
+        LedBlau.show()
+        basic.pause(200)
+    } else {
+        basic.pause(50)
     }
-    basic.pause(50)
 })
 basic.forever(function () {
     if (modus == 0) {
