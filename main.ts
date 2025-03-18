@@ -44,6 +44,26 @@ function setup () {
     modus = 0
     LedBlau = neopixel.create(DigitalPin.P14, numerOfLeds, NeoPixelMode.RGB)
     LedRot = neopixel.create(DigitalPin.P14, numerOfLeds, NeoPixelMode.RGB)
+    ledDemo = neopixel.create(DigitalPin.P14, 16, NeoPixelMode.RGB)
+    aktuelleLautstärke = Math.round(Math.map(pins.analogReadPin(AnalogPin.P0), 0, 1023, 0, 30))
+    DFPlayerPro.MP3_setSerial(SerialPin.P13, SerialPin.P16)
+    DFPlayerPro.MP3_amplifierMode(
+    DFPlayerPro.ampType.ampOff
+    )
+    DFPlayerPro.MP3_ledMode(DFPlayerPro.ledType.ledOn)
+    DFPlayerPro.MP3_setVol(Math.round(aktuelleLautstärke))
+    DFPlayerPro.MP3_setPlayMode(DFPlayerPro.PlayType.playOneSongAndPause)
+    DFPlayerPro.MP3_amplifierMode(
+    DFPlayerPro.ampType.ampOn
+    )
+    initDemo()
+    modus = 1
+    basic.showIcon(IconNames.Happy)
+}
+function initDemo () {
+    ledDemo.showRainbow(1, 360)
+}
+function initRace () {
     LedRot.setPixelColor(0, neopixel.colors(NeoPixelColors.Red))
     LedRot.setPixelColor(1, neopixel.colors(NeoPixelColors.Red))
     LedRot.setPixelColor(2, neopixel.colors(NeoPixelColors.Red))
@@ -58,22 +78,10 @@ function setup () {
     LedBlau.setPixelColor(4, neopixel.colors(NeoPixelColors.Blue))
     LedBlau.setPixelColor(5, neopixel.colors(NeoPixelColors.Blue))
     LedBlau.show()
-    aktuelleLautstärke = Math.round(Math.map(pins.analogReadPin(AnalogPin.P0), 0, 1023, 0, 30))
-    DFPlayerPro.MP3_setSerial(SerialPin.P13, SerialPin.P16)
-    DFPlayerPro.MP3_amplifierMode(
-    DFPlayerPro.ampType.ampOff
-    )
-    DFPlayerPro.MP3_ledMode(DFPlayerPro.ledType.ledOn)
-    DFPlayerPro.MP3_setVol(Math.round(aktuelleLautstärke))
-    DFPlayerPro.MP3_setPlayMode(DFPlayerPro.PlayType.playOneSongAndPause)
-    DFPlayerPro.MP3_amplifierMode(
-    DFPlayerPro.ampType.ampOn
-    )
-    modus = 1
-    basic.showIcon(IconNames.Happy)
 }
 let neueLautstärke = 0
 let aktuelleLautstärke = 0
+let ledDemo: neopixel.Strip = null
 let counterBlue = 0
 let LedBlau: neopixel.Strip = null
 let counterRed = 0
@@ -91,6 +99,7 @@ ledSteps = 5
 spielrunden = 1
 basic.pause(1000)
 setup()
+// Spielbuttons Blinken
 basic.forever(function () {
     if (modus == 42) {
         pins.digitalWritePin(DigitalPin.P15, 0)
@@ -99,20 +108,7 @@ basic.forever(function () {
     }
     basic.pause(50)
 })
-basic.forever(function () {
-    if (modus >= 41) {
-        LedRot.show()
-        basic.pause(50)
-        LedBlau.show()
-    } else if (modus == 4) {
-        LedRot.show()
-        basic.pause(200)
-        LedBlau.show()
-        basic.pause(200)
-    } else {
-        basic.pause(50)
-    }
-})
+// Startbutton licht
 basic.forever(function () {
     if (modus == 0) {
         pins.digitalWritePin(DigitalPin.P9, 0)
@@ -123,6 +119,25 @@ basic.forever(function () {
         pins.digitalWritePin(DigitalPin.P9, 0)
     } else {
         pins.digitalWritePin(DigitalPin.P9, 1)
+    }
+})
+// LED-Streifen blinken
+basic.forever(function () {
+    if (modus >= 41) {
+        LedRot.show()
+        basic.pause(50)
+        LedBlau.show()
+    } else if (modus == 4) {
+        LedRot.show()
+        basic.pause(200)
+        LedBlau.show()
+        basic.pause(200)
+    } else if (modus == 1) {
+        ledDemo.rotate(randint(1, 8))
+        ledDemo.show()
+        basic.pause(100)
+    } else {
+        basic.pause(50)
     }
 })
 basic.forever(function () {
