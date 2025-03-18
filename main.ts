@@ -126,13 +126,13 @@ basic.forever(function () {
 // LED-Streifen blinken
 basic.forever(function () {
     if (modus >= 41) {
-        LedRot.show()
+        LedBlau.show()
         basic.pause(50)
-        LedBlau.show()
-    } else if (modus == 4) {
         LedRot.show()
-        basic.pause(200)
+    } else if (modus == 4) {
         LedBlau.show()
+        basic.pause(200)
+        LedRot.show()
         basic.pause(200)
     } else if (modus == 1) {
         basic.pause(50)
