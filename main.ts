@@ -86,8 +86,8 @@ let numerOfLeds = 0
 let modus = 0
 radio.setGroup(42)
 modus = 0
-numerOfLeds = 62
-ledSteps = 3
+numerOfLeds = 450
+ledSteps = 5
 spielrunden = 1
 basic.pause(1000)
 setup()
