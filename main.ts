@@ -1,18 +1,18 @@
 input.onButtonPressed(Button.A, function () {
     if (modus == 1) {
-        DFPlayerPro.MP3_playFilePathName("letsgo.mp3")
+        DFPlayerPro.MP3_playFilePathName("mayday1.mp3")
         for (let index = 0; index < 13; index++) {
             LedBlau.rotate(2)
             LedBlau.show()
-            basic.pause(200)
+            basic.pause(300)
             LedRot.rotate(2)
             LedRot.show()
-            basic.pause(200)
+            basic.pause(300)
         }
-        DFPlayerPro.MP3_playFilePathName("start.mp3")
+        basic.pause(500)
         // Buttons nicht blinken
         modus = 41
-        basic.pause(5000)
+        basic.pause(5500)
         startzeit = input.runningTime()
         modus = 42
     } else {
